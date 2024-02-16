@@ -5,7 +5,7 @@ const TILE_SIZE = 64;
 
 export class Platform {
     constructor(rows, cols, x) {
-        this.speed = 0.5;
+        this.speed = 4;
 
         this.rows = rows;
         this.cols = cols;
@@ -19,6 +19,9 @@ export class Platform {
 
     get left() {
         return this.container.x;
+    }
+    get nextLeft() {
+        return this.left - this.speed;
     }
     get right() {
         return this.left + this.width;
@@ -58,5 +61,36 @@ export class Platform {
         if (this.right < 0) {
             this.container.emit('hidden');
         }
+    }
+
+    checkCollision(hero) {
+        if (this.isCollideTop(hero)) {
+            hero.stayOnPlatform(this);
+        } else {
+            if (hero.platform === this) {
+                hero.platform = null;
+            }
+
+            if (this.isCollideLeft(hero)) {
+                hero.moveByPlatform(this);
+            }
+        }
+    }
+
+    isCollideTop(hero) {
+        return (
+            hero.right >= this.left &&
+            hero.left <= this.right &&
+            hero.bottom <= this.top &&
+            hero.nextBottom >= this.top
+        );
+    }
+    isCollideLeft(hero) {
+        return (
+            hero.bottom >= this.top &&
+            hero.top <= this.bottom &&
+            hero.right <= this.left &&
+            hero.right >= this.nextLeft
+        );
     }
 }

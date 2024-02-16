@@ -3,7 +3,7 @@ import { globals } from "./utils.js";
 
 export class Background {
     constructor() {
-        this.speed = 0.1;
+        this.speed = 1;
         this.container = new PIXI.Container();
         this.createSprites();
     }
