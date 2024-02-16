@@ -1,10 +1,16 @@
 import * as PIXI from "pixi.js";
-import { globals } from "./utils.js";
+import { globals, getRandomNumber } from "./utils.js";
+import { Diamond } from "./Diamond";
 
 const TILE_SIZE = 64;
 
+
 export class Platform {
     constructor(rows, cols, x) {
+        this.diamonds = [];
+        this.diamondsOffsetMin = 100;
+        this.diamondsOffsetMax = 200;
+
         this.speed = 4;
 
         this.rows = rows;
@@ -15,6 +21,7 @@ export class Platform {
 
         this.createContainer(x);
         this.createTiles();
+        this.createDiamonds();
     }
 
     get left() {
@@ -55,6 +62,19 @@ export class Platform {
         tile.y = row * tile.height;
     }
 
+    createDiamonds() {
+        const y = getRandomNumber(this.diamondsOffsetMin, this.diamondsOffsetMax);
+
+        for (let i = 0; i < this.cols; i++) {
+            // 40%
+            if (Math.random() < 0.4) {
+                const diamond = new Diamond(TILE_SIZE * i, -y);
+                this.container.addChild(diamond.sprite);
+                this.diamonds.push(diamond);
+            }
+        }
+    }
+
     move() {
         this.container.x -= this.speed;
 
@@ -64,6 +84,10 @@ export class Platform {
     }
 
     checkCollision(hero) {
+        this.diamonds.forEach(diamond => {
+            diamond.checkCollision(hero);
+        })
+
         if (this.isCollideTop(hero)) {
             hero.stayOnPlatform(this);
         } else {

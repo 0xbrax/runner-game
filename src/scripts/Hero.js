@@ -3,6 +3,7 @@ import { globals } from "./utils.js";
 
 export class Hero {
     constructor() {
+        this.score = 0;
         this.dy = 0;
         this.jumpCounter = 0;
         this.platform = null;
@@ -53,22 +54,23 @@ export class Hero {
         }
     }
 
+    collectDiamond() {
+        this.score++;
+        this.sprite.emit('score');
+    }
+
     isAlive() {
         return this.top < window.innerHeight;
-    }
-    reset() {
-        this.sprite.x = 200;
-        this.sprite.y = 100;
     }
 
     update(dt) {
         if (!this.platform) {
             this.dy++;
             this.sprite.y += this.dy;
+        }
 
-            if (!this.isAlive()) {
-                this.reset();
-            }
+        if (!this.isAlive()) {
+            this.sprite.emit('die');
         }
     }
 }
