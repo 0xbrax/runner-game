@@ -1,5 +1,6 @@
 import * as PIXI from "pixi.js";
 import { Background } from "./Background";
+import { Platforms } from "./Platforms";
 
 export class MainScene {
     constructor() {
@@ -9,10 +10,21 @@ export class MainScene {
         //     volume: 0.2
         // });
         this.createBackground();
+        this.createPlatforms();
     }
 
     createBackground() {
         this.bg = new Background();
         this.container.addChild(this.bg.container);
+    }
+
+    createPlatforms() {
+        this.platforms = new Platforms();
+        this.container.addChild(this.platforms.container);
+    }
+
+    update(dt) {
+        this.bg.update(dt);
+        this.platforms.update(dt)
     }
 }

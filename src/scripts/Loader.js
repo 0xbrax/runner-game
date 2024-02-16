@@ -1,5 +1,5 @@
 import { LoaderConfig } from "./LoaderConfig";
-import { Globals } from "./Globals";
+import { globals } from "./utils.js";
 
 export class Loader {
     constructor(loader) {
@@ -11,7 +11,7 @@ export class Loader {
         return new Promise(async resolve => {
             for (const key in this.resources) {
                 this.loader.add({ alias: key, src: this.resources[key] });
-                Globals.resources[key] = await this.loader.load(key);
+                globals.resources[key] = await this.loader.load(key);
             }
             resolve();
         });
