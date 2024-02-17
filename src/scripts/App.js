@@ -1,5 +1,4 @@
 import * as PIXI from "pixi.js";
-import TWEEN from "@tweenjs/tween.js";
 import { Loader } from "./Loader";
 import { MainScene } from "./MainScene";
 import { globals } from "./utils.js";

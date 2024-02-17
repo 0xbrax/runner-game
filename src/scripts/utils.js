@@ -1,5 +1,6 @@
 export const globals = {
-    resources: {}
+    resources: {},
+    scene: null
 };
 
 export const getRandomNumber = (min, max) => {
